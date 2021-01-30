@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2021, Hexagon Software
+  ~ Licensed under BSD-3 Clause.
+  ~ <https://hexagon-software.github.io/Polygon/license.html>
+  -->
+
+<!--
+  ~ Copyright (c) 2021, Hexagon Software\nLicensed under BSD-3 Clause <https://hexagon-software.github.io/Polygon/license.html>
+  -->
+
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t]-[%level] (%logger{36}) %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>
