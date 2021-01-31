@@ -61,6 +61,7 @@ public class GLGraphics {
     public Font getFont() { return font; }
     public float[] getColor() {return new float[] {r, g, b, a};}
     public Color getAWTColor() { return new Color(r*255f, g*255f, b*255f, a*255f);}
+    public GLAutoDrawable getDrawable() { return this.drawable; }
 
     /**
      * Fills a Rectangle.
@@ -124,7 +125,17 @@ public class GLGraphics {
         }
     }
 
-    public void drawTriangle(int rx, int ry, int tx, int ty, int lx, int ly) {
+    /**
+     * Fills a triangle.
+     * 
+     * @param rx X Coordinate of the right point
+     * @param ry Y Coordinate of the right point
+     * @param tx X Coordinate of the top point
+     * @param ty Y Coordinate of the top point
+     * @param lx X Coordinate of the left point
+     * @param ly Y Coordinate of the left point
+     * */
+    public void fillTriangle(int rx, int ry, int tx, int ty, int lx, int ly) {
     	GL2 gl = drawable.getGL().getGL2();
     	
     	if (alphaEnabled) {
@@ -138,6 +149,41 @@ public class GLGraphics {
 			gl.glVertex2f(lx, ly);
     		gl.glVertex2f(rx, ry);
     		gl.glVertex2f(tx, ty);
+    	gl.glEnd();
+    	
+    	if (alphaEnabled) {
+    		gl.glPopMatrix();
+    	}
+    }
+    
+    /**
+     * Draws an empty triangle.
+     * 
+     * @param rx X Coordinate of the right point
+     * @param ry Y Coordinate of the right point
+     * @param tx X Coordinate of the top point
+     * @param ty Y Coordinate of the top point
+     * @param lx X Coordinate of the left point
+     * @param ly Y Coordinate of the left point
+     * */
+    public void drawTriangle(int rx, int ry, int tx, int ty, int lx, int ly) {
+    	GL2 gl = drawable.getGL().getGL2();
+    	
+    	if (alphaEnabled) {
+    		gl.glPushMatrix();
+    		gl.glEnable(GL2.GL_BLEND);
+    	}
+    	
+    	gl.glColor4f(r, g, b, a);
+    	gl.glBegin(GL2.GL_LINES);
+			gl.glVertex2f(lx, ly);
+    		gl.glVertex2f(rx, ry);
+
+    		gl.glVertex2f(rx, ry);
+    		gl.glVertex2f(tx, ty);
+
+    		gl.glVertex2f(tx, ty);
+			gl.glVertex2f(lx, ly);
     	gl.glEnd();
     	
     	if (alphaEnabled) {
@@ -236,6 +282,4 @@ public class GLGraphics {
         tr.draw(s, x, y);
         tr.endRendering();
     }
-
-    public GLAutoDrawable getDrawable() { return this.drawable; }
 }

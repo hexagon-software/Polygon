@@ -1,2 +1,6 @@
 {
+	"textures": { 
+		"orange": "1unit_orange.png",
+		"white": "1unit_white.png"
+	}
 }

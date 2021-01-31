@@ -31,6 +31,8 @@ public class GLRenderHandler implements GLEventListener {
 
         Polygon.PG_CAMERA.getVisible().forEach((v) -> v.render(g));
         Polygon.RENDER_TARGETS.forEach((v) -> v.render(g));
+        
+        if (Polygon.PG_IGAME != null) Polygon.PG_IGAME.render(g);
     }
 
     public void reshape(GLAutoDrawable glAutoDrawable, int x, int y, int width, int height) {

@@ -6,6 +6,7 @@
 package de.hexagonsoftware.pg;
 
 import de.hexagonsoftware.pg.game.Camera;
+import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.game.IUpdated;
 import de.hexagonsoftware.pg.game.objects.GameObjectHandler;
 import de.hexagonsoftware.pg.graphics.GLRenderHandler;
@@ -63,6 +64,10 @@ public class Polygon implements Runnable {
      * */
     public static Camera PG_CAMERA = new Camera(0 ,0 , -1, 1920, 1080);
     /**
+     * IGame instance
+     * */
+    public static IGame PG_IGAME;
+    /**
      * Engine Version
      * */
     public static final String PG_VERSION = "1";
@@ -82,6 +87,9 @@ public class Polygon implements Runnable {
      * Debug Console
      * */
     public static DebugConsole PG_DEBUG_CONSOLE;
+    /**
+     * Debug Console Thread.
+     * */
     public static Thread PG_DEBUG_CONSOLE_THREAD;
     ///////////////////////////////////////////////////////////////////////
 
@@ -112,6 +120,11 @@ public class Polygon implements Runnable {
         PG_LOGGER.info("Starting Thread...");
         PG_THREAD = new Thread(this, "PG"+PG_VERSION);
         PG_THREAD.start();
+    }
+    
+    public void start(IGame game) {
+        PG_IGAME = game;
+        start();
     }
 
     public void run() {
@@ -159,6 +172,8 @@ public class Polygon implements Runnable {
             }
          }
 
+        if (PG_IGAME != null) PG_IGAME.start();
+        
         while (PG_THREAD_RUNNING) {
             update();
             PG_WINDOW.getCanvas().display();
@@ -176,6 +191,8 @@ public class Polygon implements Runnable {
         while (i.hasNext()) {
             ((IUpdated) i.next()).update();
         }
+        
+        if (PG_IGAME != null) PG_IGAME.update();
     }
 
     public static class WorldUnits {
