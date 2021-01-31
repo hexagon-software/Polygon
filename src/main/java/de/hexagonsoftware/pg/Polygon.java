@@ -5,6 +5,13 @@
  */
 package de.hexagonsoftware.pg;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.hexagonsoftware.pg.game.Camera;
 import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.game.IUpdated;
@@ -16,11 +23,6 @@ import de.hexagonsoftware.pg.resources.ResourceLoader;
 import de.hexagonsoftware.pg.util.FileUtil;
 import de.hexagonsoftware.pg.util.PGProperties;
 import de.hexagonsoftware.pg.util.debugging.DebugConsole;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Polygon 1 by Hexagon Software.
@@ -188,8 +190,13 @@ public class Polygon implements Runnable {
 
         Iterator<IUpdated> i = PG_UPDATER_LIST.iterator();
 
-        while (i.hasNext()) {
-            ((IUpdated) i.next()).update();
+        try {
+	        while (i.hasNext()) {
+	            ((IUpdated) i.next()).update();
+	        }
+        } catch (ConcurrentModificationException e) {
+        	PG_LOGGER.warn("Caught CME whilst updating");
+        	return;
         }
         
         if (PG_IGAME != null) PG_IGAME.update();

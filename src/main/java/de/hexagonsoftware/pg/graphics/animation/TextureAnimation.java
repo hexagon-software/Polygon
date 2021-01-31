@@ -2,12 +2,20 @@ package de.hexagonsoftware.pg.graphics.animation;
 
 import com.jogamp.opengl.util.texture.Texture;
 
+import de.hexagonsoftware.pg.Polygon;
 import de.hexagonsoftware.pg.graphics.GLGraphics;
 
+/**
+ * An Animation consisting of multiple textures.
+ * 
+ * @author Felix Eckert
+ * */
 public class TextureAnimation extends Animation {
 	private Texture[] frames;
 	private int index;
 	private long lastTime;
+	public int played;
+	public boolean once;
 	
 	private int x, y, width, height;
 	
@@ -16,6 +24,8 @@ public class TextureAnimation extends Animation {
 		this.frames = frames;
 		this.index  = 0;
 		this.lastTime = System.currentTimeMillis();
+		this.played = 0;
+		this.once = false;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -27,10 +37,29 @@ public class TextureAnimation extends Animation {
 		
 		if (index == nFrames-1) {
 			index = 0;
+			if (once) {
+				Polygon.RENDER_TARGETS.remove(this);
+				Polygon.PG_UPDATER_LIST.remove(this);
+				once = false;
+				return;
+			}
+			played++;
 			return;
 		}
 		
 		index++;
+	}
+	
+	public void play() {
+		once = true;
+
+		Polygon.RENDER_TARGETS.add(this);
+		Polygon.PG_UPDATER_LIST.add(this);
+	}
+	
+	public void loop() {
+		Polygon.RENDER_TARGETS.add(this);
+		Polygon.PG_UPDATER_LIST.add(this);
 	}
 	
 	public void update() {

@@ -19,15 +19,16 @@ public class Game implements IGame {
 	@Override
 	public void start() {
 		// Test Animation
-        TextureAnimation ta = new TextureAnimation(new Texture[] {ResourceHandler.getGLTexture("orange").get(), 
-        		ResourceHandler.getGLTexture("white").get()},
+        TextureAnimation ta = new TextureAnimation(new Texture[] {ResourceHandler.getGLTexture("f1").get(), 
+        		ResourceHandler.getGLTexture("f2").get(),
+        		ResourceHandler.getGLTexture("f3").get(),
+        		ResourceHandler.getGLTexture("f4").get(),
+        		ResourceHandler.getGLTexture("f5").get()},
         		1000, // 1 FPS
-        		500, // draw at X: 500
-        		500, // Y: 500
-        		128, // Width
-        		128  // Height
+        		0, // draw at X: 500
+        		0, // Y: 500
+        		1280, // Width
+        		720  // Height
         		);
-        Polygon.RENDER_TARGETS.add(ta);
-        Polygon.PG_UPDATER_LIST.add(ta);
 	}
 }

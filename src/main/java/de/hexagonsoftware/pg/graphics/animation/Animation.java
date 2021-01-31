@@ -4,6 +4,12 @@ import de.hexagonsoftware.pg.game.IUpdated;
 import de.hexagonsoftware.pg.graphics.GLGraphics;
 import de.hexagonsoftware.pg.graphics.IRenderer;
 
+/**
+ * Animation Base Class, this is only used
+ * to generalize different types of animations.
+ * 
+ * @author Felix Eckert
+ * */
 public class Animation implements IRenderer, IUpdated {
 	protected double speed;
 	

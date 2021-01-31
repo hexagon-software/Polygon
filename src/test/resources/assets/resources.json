@@ -1,6 +1,11 @@
 {
 	"textures": { 
 		"orange": "1unit_orange.png",
-		"white": "1unit_white.png"
+		"white": "1unit_white.png",
+		"f1":"anim/test_an_f1.png",
+		"f2":"anim/test_an_f2.png",
+		"f3":"anim/test_an_f3.png",
+		"f4":"anim/test_an_f4.png",
+		"f5":"anim/test_an_f5.png"
 	}
 }
