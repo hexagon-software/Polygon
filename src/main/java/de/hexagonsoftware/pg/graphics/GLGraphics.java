@@ -58,6 +58,7 @@ public class GLGraphics {
         return tr.getBounds(s);
     }
 
+    public Font getFont() { return font; }
     public float[] getColor() {return new float[] {r, g, b, a};}
     public Color getAWTColor() { return new Color(r*255f, g*255f, b*255f, a*255f);}
 
@@ -123,6 +124,27 @@ public class GLGraphics {
         }
     }
 
+    public void drawTriangle(int rx, int ry, int tx, int ty, int lx, int ly) {
+    	GL2 gl = drawable.getGL().getGL2();
+    	
+    	if (alphaEnabled) {
+    		gl.glPushMatrix();
+    		gl.glEnable(GL2.GL_BLEND);
+    	}
+    	
+    	gl.glColor4f(r, g, b, a);
+    	
+    	gl.glBegin(GL2.GL_TRIANGLES);
+			gl.glVertex2f(lx, ly);
+    		gl.glVertex2f(rx, ry);
+    		gl.glVertex2f(tx, ty);
+    	gl.glEnd();
+    	
+    	if (alphaEnabled) {
+    		gl.glPopMatrix();
+    	}
+    }
+    
     /**
      * Draw a texture at its original x and y
      *

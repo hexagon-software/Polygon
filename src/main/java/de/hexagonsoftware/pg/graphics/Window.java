@@ -19,7 +19,8 @@ import java.awt.*;
  * @author Felix Eckert
  * */
 public class Window extends JFrame {
-    private GLCanvas canvas;
+	private static final long serialVersionUID = 358220186612388715L;
+	private GLCanvas canvas;
     private GLCapabilities capabilities;
     private GLProfile profile;
 

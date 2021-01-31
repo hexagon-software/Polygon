@@ -171,7 +171,7 @@ public class Polygon implements Runnable {
         PG_CAMERA.update();
         PG_GAME_OBJECT_HANDLER.update();
 
-        Iterator i = PG_UPDATER_LIST.iterator();
+        Iterator<IUpdated> i = PG_UPDATER_LIST.iterator();
 
         while (i.hasNext()) {
             ((IUpdated) i.next()).update();

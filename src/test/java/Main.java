@@ -35,6 +35,8 @@ public class Main implements IRenderer {
 
         g.setColor(new Color(0, 255, 50, 100));
         g.fillRect(0, 15*8, 20*8, 5*8);
-
+        
+        g.setColor(new Color(255, 255, 255, 127));
+        g.drawTriangle(0, 100, 100, 0, 200, 100);
     }
 }

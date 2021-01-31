@@ -16,7 +16,9 @@ import java.util.Properties;
  * different Objects/Data Types.
  * */
 public class PGProperties extends Properties {
-    @Override
+	private static final long serialVersionUID = 5031063331601447224L;
+
+	@Override
     public String getProperty(String name) {
         String out = super.getProperty(name);
 

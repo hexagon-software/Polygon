@@ -28,6 +28,7 @@ public class DebugConsole implements Runnable {
             switch (in) {
                 case "stop":
                     Polygon.PG_THREAD_RUNNING = false;
+                    s.close();
 		            LOGGER.info("> Exiting...");
                     break;
                 //case "reloadTextures":

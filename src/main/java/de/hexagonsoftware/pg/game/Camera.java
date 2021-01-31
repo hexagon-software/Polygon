@@ -40,7 +40,7 @@ public class Camera {
     public void update() {
         visible.clear();
         ArrayList<GameObject> objects = Polygon.PG_GAME_OBJECT_HANDLER.getGameObjects();
-        Iterator i = objects.iterator();
+        Iterator<GameObject> i = objects.iterator();
         while (i.hasNext()) {
             GameObject obj = (GameObject) i.next();
 

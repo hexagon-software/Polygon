@@ -6,12 +6,9 @@
 
 package de.hexagonsoftware.pg.game.objects;
 
-import de.hexagonsoftware.pg.Polygon;
-import de.hexagonsoftware.pg.graphics.GLGraphics;
-import de.hexagonsoftware.pg.graphics.IRenderer;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import de.hexagonsoftware.pg.graphics.GLGraphics;
 
 public class GameObjectHandler {
     private ArrayList<GameObject> OBJECTS = new ArrayList<>();

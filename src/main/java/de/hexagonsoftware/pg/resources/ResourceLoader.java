@@ -6,16 +6,17 @@
 
 package de.hexagonsoftware.pg.resources;
 
+import java.io.InputStreamReader;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.jogamp.opengl.GL;
-import com.sun.istack.Nullable;
-import de.hexagonsoftware.pg.Polygon;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.io.InputStreamReader;
+import de.hexagonsoftware.pg.Polygon;
 
 public class ResourceLoader {
 	private static Logger logger = LogManager.getLogger("ResourceLoader");

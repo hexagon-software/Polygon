@@ -1,14 +1,15 @@
 package de.hexagonsoftware.pg.resources;
 
+import java.awt.image.BufferedImage;
+
 import com.jogamp.opengl.GL;
-import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
-import de.hexagonsoftware.pg.util.PGImageUtil;
+
 import de.hexagonsoftware.pg.util.ImageLoader;
-import java.awt.image.BufferedImage;
+import de.hexagonsoftware.pg.util.PGImageUtil;
 
 public class GLTextureResource implements IResource {
     private Texture texture;
