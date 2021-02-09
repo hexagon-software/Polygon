@@ -166,7 +166,7 @@ public class GLGraphics {
      * @param lx X Coordinate of the left point
      * @param ly Y Coordinate of the left point
      * */
-    public void drawTriangle(int rx, int ry, int tx, int ty, int lx, int ly) {
+    public void drawTriangle(int lx, int ly, int tx, int ty, int rx, int ry) {
     	GL2 gl = drawable.getGL().getGL2();
     	
     	if (alphaEnabled) {
@@ -176,14 +176,14 @@ public class GLGraphics {
     	
     	gl.glColor4f(r, g, b, a);
     	gl.glBegin(GL2.GL_LINES);
-			gl.glVertex2f(lx, ly);
-    		gl.glVertex2f(rx, ry);
+			gl.glVertex2f(rx, ry);
+    		gl.glVertex2f(lx, ly);
 
-    		gl.glVertex2f(rx, ry);
+    		gl.glVertex2f(lx, ly);
     		gl.glVertex2f(tx, ty);
 
     		gl.glVertex2f(tx, ty);
-			gl.glVertex2f(lx, ly);
+			gl.glVertex2f(rx, ry);
     	gl.glEnd();
     	
     	if (alphaEnabled) {

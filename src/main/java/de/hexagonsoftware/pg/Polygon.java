@@ -99,6 +99,7 @@ public class Polygon implements Runnable {
      * Creates a generic Engine Instance
      * */
     public Polygon() {
+    	PG_LOGGER.info("Initialising Polygon...");
         PG_PROPERTIES = FileUtil.loadPGPropertiesFromJAR("/default.properties", this.getClass());
         PG_WINDOW = new Window(PG_PROPERTIES.getProperty("window.title"), PG_PROPERTIES.getPropertyAsInt("window.width"),
                 PG_PROPERTIES.getPropertyAsInt("window.height"), PG_PROPERTIES.getPropertyAsBool("window.resizable"));
@@ -110,6 +111,7 @@ public class Polygon implements Runnable {
      * @param CLAZZ The class to use for loading this file.
      * */
     public Polygon(String properties, Class<?> CLAZZ) {
+    	PG_LOGGER.info("Initialising Polygon...");
         PG_CLASS_LOADING = CLAZZ;
         PG_PROPERTIES = FileUtil.loadPGPropertiesFromJAR(properties, CLAZZ);
         PG_WINDOW = new Window(PG_PROPERTIES.getProperty("window.title"), PG_PROPERTIES.getPropertyAsInt("window.width"),
@@ -205,7 +207,7 @@ public class Polygon implements Runnable {
     public static class WorldUnits {
         public static final int    ONE_UNIT_PX = 8;
         public static final double ONE_PX_UNIT = 0.125;
-        public static double SCALE_FACTOR_X = 1;
-        public static double SCALE_FACTOR_Y = 1;
+        public static double 	   SCALE_FACTOR_X = 1;
+        public static double 	   SCALE_FACTOR_Y = 1;
     }
 }
