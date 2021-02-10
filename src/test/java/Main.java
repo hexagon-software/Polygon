@@ -8,13 +8,12 @@ import java.awt.Color;
 
 import de.hexagonsoftware.pg.Polygon;
 import de.hexagonsoftware.pg.audio.AudioEngine;
-import de.hexagonsoftware.pg.audio.AudioEngineException;
 import de.hexagonsoftware.pg.game.objects.GameObject;
 import de.hexagonsoftware.pg.graphics.GLGraphics;
 import de.hexagonsoftware.pg.graphics.IRenderer;
 
 public class Main implements IRenderer {
-    public static void main(String[] args) throws AudioEngineException {
+    public static void main(String[] args) {
         //System.out.println("Running Polygon Test...");
         Polygon pg = new Polygon("/engine.properties", Main.class);
         

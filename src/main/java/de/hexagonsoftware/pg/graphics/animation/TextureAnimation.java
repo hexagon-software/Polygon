@@ -18,7 +18,15 @@ public class TextureAnimation extends Animation {
 	public boolean once;
 	
 	private int x, y, width, height;
-	
+
+	/**
+	 * @param frames The frames for the animation
+	 * @param speed  The speed of the animation in milliseconds
+	 * @param x      The X Coordinate for drawing
+	 * @param y		 The Y Coordinate for drawing
+	 * @param width  The Width for drawing
+	 * @param height The Height for drawing
+	 * */
 	public TextureAnimation(Texture[] frames, double speed, int x, int y, int width, int height) {
 		super(speed);
 		this.frames = frames;
@@ -32,6 +40,10 @@ public class TextureAnimation extends Animation {
 		this.height = height;
 	}
 	
+	/**
+	 * Jumps the frame-index to the next frame,
+	 * if it is the last frame, it loops over.
+	 * */
 	public void nextFrame() {
 		int nFrames = frames.length;
 		
@@ -50,6 +62,9 @@ public class TextureAnimation extends Animation {
 		index++;
 	}
 	
+	/**
+	 * Plays back the Animation once.
+	 * */
 	public void play() {
 		once = true;
 
@@ -57,9 +72,21 @@ public class TextureAnimation extends Animation {
 		Polygon.PG_UPDATER_LIST.add(this);
 	}
 	
+	/**
+	 * Loops the Animation
+	 * */
 	public void loop() {
 		Polygon.RENDER_TARGETS.add(this);
 		Polygon.PG_UPDATER_LIST.add(this);
+	}
+	
+	/**
+	 * Stops the animation and resets the index.
+	 * */
+	public void stop() {
+		Polygon.RENDER_TARGETS.remove(this);
+		Polygon.PG_UPDATER_LIST.remove(this);
+		this.index = 0;
 	}
 	
 	public void update() {

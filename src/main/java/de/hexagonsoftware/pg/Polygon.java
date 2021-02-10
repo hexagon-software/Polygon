@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.hexagonsoftware.pg.audio.AudioEngine;
 import de.hexagonsoftware.pg.game.Camera;
 import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.game.IUpdated;
@@ -133,11 +134,11 @@ public class Polygon implements Runnable {
 
     public void run() {
         PG_THREAD_RUNNING = true;
-
+        
         PG_LOGGER.info("Initialising GLRenderHandler");
         PG_RENDER_HANDLER = new GLRenderHandler();
 
-        PG_LOGGER.info("Loading Textures...");
+        PG_LOGGER.info("Loading Resources...");
 
         PG_LOGGER.info(PG_PROPERTIES.getProperty("common.gameResourceList"));
         if (!PG_PROPERTIES.getProperty("common.gameResourceList").matches("NotFound")) {

@@ -17,6 +17,7 @@ import com.google.gson.stream.JsonReader;
 import com.jogamp.opengl.GL;
 
 import de.hexagonsoftware.pg.Polygon;
+import de.hexagonsoftware.pg.audio.AudioEngine;
 
 public class ResourceLoader {
 	private static Logger logger = LogManager.getLogger("ResourceLoader");
@@ -27,14 +28,35 @@ public class ResourceLoader {
 		JsonObject resourceFile = gson.fromJson(reader, JsonObject.class);
 
 		if (resourceFile.has("textures")) {
+			logger.info("Loading Textures...");
 			loadTextures(resourceFile, CLASS, gl);
 		}
 		if (resourceFile.has("sounds")) {
-			//loadSounds(resourceFile);
+			System.out.println("Loading Sounds...");
+			loadSounds(resourceFile);
 		}
 		if (resourceFile.has("fonts")) {
 			loadFonts(resourceFile, CLASS);
 		}
+	}
+
+	private static void loadSounds(JsonObject resourceFile) {
+		JsonObject textures = resourceFile.get("sounds").getAsJsonObject();
+		String assetsRoot   = Polygon.PG_PROPERTIES.getProperty("common.assetsRoot");
+
+		if (assetsRoot == null || assetsRoot.matches("NotFound"))
+			assetsRoot = "";
+
+		int loadedSounds = 0;
+
+		for (String texture : textures.keySet()) {
+			loadedSounds++;
+			logger.debug("NAME: "+texture);
+			logger.debug("PATH: "+textures.get(texture).getAsString());
+			AudioEngine.getInstance().loadSound(texture, assetsRoot + textures.get(texture).getAsString());
+		}
+
+		logger.info("Loaded "+loadedSounds+" sound(s)");
 	}
 
 	private static void loadTextures(JsonObject resourceFile, Class<?> CLASS, GL gl) {
