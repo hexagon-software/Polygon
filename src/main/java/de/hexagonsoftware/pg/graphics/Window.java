@@ -51,7 +51,7 @@ public class Window extends JFrame {
      * @param width the window width
      * @param height the window height
      * */
-    public Window(String title, int width, int height, boolean resizable) {
+    public Window(String title, int width, int height, boolean resizable, boolean fullscreen) {
         super(title);
         setSize(width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,6 +66,11 @@ public class Window extends JFrame {
 
         // Finish up
         setResizable(resizable);
+        if (fullscreen) {
+        	setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        	setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        	setUndecorated(true);
+        }
         setVisible(true);
     }
 

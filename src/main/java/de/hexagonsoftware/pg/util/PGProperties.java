@@ -43,7 +43,11 @@ public class PGProperties extends Properties {
 
         return num;
     }
-
+    
+    /**
+     * @param name Property name
+     * @return The requested property as a Double
+     * */
     public double getPropertyAsDouble(String name) {
         String out = super.getProperty(name);
 

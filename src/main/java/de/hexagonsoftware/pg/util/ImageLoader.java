@@ -16,7 +16,7 @@ public class ImageLoader {
 		try {
 			out = ImageIO.read(clazz.getResourceAsStream(path));
 		} catch (IOException e) {
-			ErrorHandler.reportException(e);
+			e.printStackTrace();
 			return null;
 		}
 		

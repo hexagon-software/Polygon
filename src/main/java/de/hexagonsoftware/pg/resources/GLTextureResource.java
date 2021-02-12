@@ -9,7 +9,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 import de.hexagonsoftware.pg.util.ImageLoader;
-import de.hexagonsoftware.pg.util.PGImageUtil;
+import de.hexagonsoftware.pg.util.PGGraphicsUtil;
 
 public class GLTextureResource implements IResource {
     private Texture texture;
@@ -17,8 +17,8 @@ public class GLTextureResource implements IResource {
     public GLTextureResource(String texture, Class<?> CLASS, GL gl) {
         BufferedImage in = ImageLoader.loadImage(texture, CLASS);
 
-        in = PGImageUtil.flipHorizontal(in);
-        in = PGImageUtil.flipVertical(in);
+        in = PGGraphicsUtil.flipHorizontal(in);
+        in = PGGraphicsUtil.flipVertical(in);
 
         TextureData data = AWTTextureIO.newTextureData(gl.getGLProfile(), in, false);
         this.texture = TextureIO.newTexture(gl, data);

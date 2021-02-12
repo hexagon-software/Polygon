@@ -14,7 +14,8 @@ public class TextureAnimation extends Animation {
 	private Texture[] frames;
 	private int index;
 	private long lastTime;
-	public int played;
+	public int nPlayed;
+	public boolean played;
 	public boolean once;
 	
 	private int x, y, width, height;
@@ -32,7 +33,8 @@ public class TextureAnimation extends Animation {
 		this.frames = frames;
 		this.index  = 0;
 		this.lastTime = System.currentTimeMillis();
-		this.played = 0;
+		this.nPlayed = 0;
+		this.played = false;
 		this.once = false;
 		this.x = x;
 		this.y = y;
@@ -53,9 +55,10 @@ public class TextureAnimation extends Animation {
 				Polygon.RENDER_TARGETS.remove(this);
 				Polygon.PG_UPDATER_LIST.remove(this);
 				once = false;
+				played = true;
 				return;
 			}
-			played++;
+			nPlayed++;
 			return;
 		}
 		

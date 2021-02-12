@@ -81,9 +81,10 @@ public class AudioEngine {
 	 * 
 	 * @param name The name for it to be registered under
 	 * @param file The file of the sound
+	 * @param log  Enable logging
 	 * @throws AudioEngineException 
 	 * */
-	public void loadSound(String name, String file) {
+	public void loadSound(String name, String file, boolean log) {
 		Sound s = new Sound(1);
 		
 		AE_AL.alGenBuffers(1, s.buffer, 0);
@@ -120,13 +121,19 @@ public class AudioEngine {
 		}
 		
 		// Set Source Parameters
-		
-		AE_AL.alSourcei (src.source[0], AL.AL_BUFFER,   s.buffer[0]    );
-		AE_AL.alSourcef (src.source[0], AL.AL_PITCH,    pitch     	   );
-		AE_AL.alSourcef (src.source[0], AL.AL_GAIN,     gain 		   );
-		AE_AL.alSourcefv(src.source[0], AL.AL_POSITION, src.getPos(), 0);
-		AE_AL.alSourcefv(src.source[0], AL.AL_VELOCITY, src.getVel(), 0);
-		AE_AL.alSourcei (src.source[0], AL.AL_LOOPING,  s.loop[0]      );
+		try {
+			AE_AL.alSourcei (src.source[0], AL.AL_BUFFER,   s.buffer[0]    );
+			AE_AL.alSourcef (src.source[0], AL.AL_PITCH,    pitch     	   );
+			AE_AL.alSourcef (src.source[0], AL.AL_GAIN,     gain 		   );
+			AE_AL.alSourcefv(src.source[0], AL.AL_POSITION, src.getPos(), 0);
+			AE_AL.alSourcefv(src.source[0], AL.AL_VELOCITY, src.getVel(), 0);
+			AE_AL.alSourcei (src.source[0], AL.AL_LOOPING,  s.loop[0]      );
+		} catch (NullPointerException e) {
+			AE_LOGGER.error(String.format("An error occured whilst creating sound source: NAME \"%s\" ; "
+					+ "The SoundObject is null, sound not loaded/registered?", sound));
+			
+			return -1;
+		}
 		
 		err = AE_AL.alGetError();
 		if (err != AL.AL_NO_ERROR) {
@@ -143,7 +150,10 @@ public class AudioEngine {
 	 * @param source The ID of the source to be played
 	 * */
 	public void playSource(int source) {
-		if (source == -1) return;
+		if (source == -1) { 
+			AE_LOGGER.warn("The given source ID is -1");
+			return; 
+		}
 		AE_AL.alSourcePlay(source);
 	}
 	
@@ -180,7 +190,7 @@ public class AudioEngine {
 	 * Kills all AL data
 	 * */
 	public void killALData() {
-		AE_LOGGER.info("Shutting down AudioEngine...");
+		AE_LOGGER.info("Killing AL-Data...");
 		AE_SOUNDS.forEach((k, v) -> AE_AL.alDeleteBuffers(AE_SOUNDS.keySet().size(), v.buffer, 0));
 		AE_SOURCES.forEach((v) -> AE_AL.alDeleteSources(AE_SOURCES.size(), v.source, 0));
 		ALut.alutExit();

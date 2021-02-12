@@ -12,6 +12,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
+/**
+ * This class holds references to Fonts and
+ * Textures loaded.
+ * 
+ * @author Felix Eckert
+ * */
 public class ResourceHandler {
     private static ResourceHandler INSTANCE = null;
     private static Logger logger = LogManager.getLogger("ResHandler");
@@ -31,7 +37,7 @@ public class ResourceHandler {
     /****** TEXTURES ******/
 
     public void registerGLTexture(String name, GLTextureResource res) {
-        logger.info(String.format("Registered GLTexture \"%s\"", name));
+        logger.debug(String.format("Registered GLTexture \"%s\"", name));
         GL_TEXTURES.put(name, res);
     }
 
@@ -49,6 +55,16 @@ public class ResourceHandler {
         }
 
         return getInstance().getGLTextureRes(name);
+    }
+    
+    public void _destroyGLTexture(String name, GL gl) {
+    	GL_TEXTURES.get(name).get().destroy(gl);
+    	GL_TEXTURES.remove(name);
+    	logger.debug("Destroyed Texture \""+name+"\"");
+    }
+    
+    public static void destroyGLTexture(String name, GL gl) {
+    	getInstance().destroyGLTexture(name, gl);
     }
 
     /****** FONTS ******/

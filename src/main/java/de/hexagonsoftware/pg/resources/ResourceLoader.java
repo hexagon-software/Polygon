@@ -32,7 +32,7 @@ public class ResourceLoader {
 			loadTextures(resourceFile, CLASS, gl);
 		}
 		if (resourceFile.has("sounds")) {
-			System.out.println("Loading Sounds...");
+			logger.info("Loading Sounds...");
 			loadSounds(resourceFile);
 		}
 		if (resourceFile.has("fonts")) {
@@ -53,7 +53,7 @@ public class ResourceLoader {
 			loadedSounds++;
 			logger.debug("NAME: "+texture);
 			logger.debug("PATH: "+textures.get(texture).getAsString());
-			AudioEngine.getInstance().loadSound(texture, assetsRoot + textures.get(texture).getAsString());
+			AudioEngine.getInstance().loadSound(texture, assetsRoot + textures.get(texture).getAsString(), true);
 		}
 
 		logger.info("Loaded "+loadedSounds+" sound(s)");

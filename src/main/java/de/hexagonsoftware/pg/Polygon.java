@@ -12,7 +12,6 @@ import java.util.Iterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.hexagonsoftware.pg.audio.AudioEngine;
 import de.hexagonsoftware.pg.game.Camera;
 import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.game.IUpdated;
@@ -103,7 +102,7 @@ public class Polygon implements Runnable {
     	PG_LOGGER.info("Initialising Polygon...");
         PG_PROPERTIES = FileUtil.loadPGPropertiesFromJAR("/default.properties", this.getClass());
         PG_WINDOW = new Window(PG_PROPERTIES.getProperty("window.title"), PG_PROPERTIES.getPropertyAsInt("window.width"),
-                PG_PROPERTIES.getPropertyAsInt("window.height"), PG_PROPERTIES.getPropertyAsBool("window.resizable"));
+                PG_PROPERTIES.getPropertyAsInt("window.height"), PG_PROPERTIES.getPropertyAsBool("window.resizable"), PG_PROPERTIES.getPropertyAsBool("window.fullscreen"));
     }
 
     /**
@@ -116,7 +115,7 @@ public class Polygon implements Runnable {
         PG_CLASS_LOADING = CLAZZ;
         PG_PROPERTIES = FileUtil.loadPGPropertiesFromJAR(properties, CLAZZ);
         PG_WINDOW = new Window(PG_PROPERTIES.getProperty("window.title"), PG_PROPERTIES.getPropertyAsInt("window.width"),
-                PG_PROPERTIES.getPropertyAsInt("window.height"), PG_PROPERTIES.getPropertyAsBool("window.resizable"));
+                PG_PROPERTIES.getPropertyAsInt("window.height"), PG_PROPERTIES.getPropertyAsBool("window.resizable"), PG_PROPERTIES.getPropertyAsBool("window.fullscreen"));
     }
 
     ///////////////////////////////////////////////////////
@@ -140,10 +139,10 @@ public class Polygon implements Runnable {
 
         PG_LOGGER.info("Loading Resources...");
 
-        PG_LOGGER.info(PG_PROPERTIES.getProperty("common.gameResourceList"));
-        if (!PG_PROPERTIES.getProperty("common.gameResourceList").matches("NotFound")) {
+        // Load Resources if the property "common.gameResourceList" exists
+        if (!PG_PROPERTIES.getProperty("common.gameResourceList").matches("NotFound")) {        
+        	PG_LOGGER.info("Game Resource List: "+PG_PROPERTIES.getProperty("common.gameResourceList"));
             PG_WINDOW.getCanvas().display();
-            //PG_WINDOW.getCanvas().getContext().makeCurrent();
             ResourceLoader.loadResources(PG_PROPERTIES.getProperty("common.gameResourceList"), PG_CLASS_LOADING, PG_WINDOW.getCanvas().getGL());
         }
 
@@ -206,6 +205,10 @@ public class Polygon implements Runnable {
     }
 
     public static class WorldUnits {
+    	// These are reference classes for the size of World Units
+    	// on a 1280x720 Window in pixels. These are used for translating
+    	// world to screen coordinates.
+    	// This will be moved to a separate class, when Physics are implemented.
         public static final int    ONE_UNIT_PX = 8;
         public static final double ONE_PX_UNIT = 0.125;
         public static double 	   SCALE_FACTOR_X = 1;

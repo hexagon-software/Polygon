@@ -13,6 +13,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import de.hexagonsoftware.pg.Polygon;
+import de.hexagonsoftware.pg.util.PGGraphicsUtil;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -60,7 +61,7 @@ public class GLGraphics {
 
     public Font getFont() { return font; }
     public float[] getColor() {return new float[] {r, g, b, a};}
-    public Color getAWTColor() { return new Color(r*255f, g*255f, b*255f, a*255f);}
+    public Color getAWTColor() { return PGGraphicsUtil.glToRGBColor(r, g, b, a);}
     public GLAutoDrawable getDrawable() { return this.drawable; }
 
     /**

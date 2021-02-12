@@ -7,7 +7,6 @@
 import java.awt.Color;
 
 import de.hexagonsoftware.pg.Polygon;
-import de.hexagonsoftware.pg.audio.AudioEngine;
 import de.hexagonsoftware.pg.game.objects.GameObject;
 import de.hexagonsoftware.pg.graphics.GLGraphics;
 import de.hexagonsoftware.pg.graphics.IRenderer;
@@ -16,26 +15,11 @@ public class Main implements IRenderer {
     public static void main(String[] args) {
         //System.out.println("Running Polygon Test...");
         Polygon pg = new Polygon("/engine.properties", Main.class);
-        
-        // Audio Engine Instance
-        AudioEngine ae = AudioEngine.getInstance();
-        
-        // Load WAV File "test" and save it as "test" in the Sounds Hashmap
-        ae.loadSound("test", "/assets/test.wav");
-        
-        // Create a new listener for the AudioEngine and specify position, orientation and velocity
-        ae.createListener(new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f});
-        
-        // Create a source for the sound "test" and save the given id for the source
-        int source = ae.createSource("test", new float[] {300f, -10f, 0f}, new float[] {0f, 0f, 0f}, 100.0f, 1.0f);
-
+       
         // Start engine and add Game Objects
         pg.start(new Game());
         Polygon.RENDER_TARGETS.add(new Main());
         Polygon.PG_GAME_OBJECT_HANDLER.addGameObject(new GameObject(5, 5, 15, 5));
-        
-        //ae.updateListener(); // <-- DEBUG
-        ae.playSource(source); // Playback the sound source
     }
 
     public void render(GLGraphics g) {

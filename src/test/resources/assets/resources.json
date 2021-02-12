@@ -7,5 +7,8 @@
 		"f3":"anim/test_an_f3.png",
 		"f4":"anim/test_an_f4.png",
 		"f5":"anim/test_an_f5.png"
+	},
+	"sounds": { 
+		"test": "test.wav"
 	}
 }
