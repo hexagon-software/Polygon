@@ -26,6 +26,3 @@ All function names should be in *snakeCase*.
 All classes should be named in *UpperSnakeCase*.
 
 * If you notice that any of these guidelines aren't met, please notify the person who made the error or correct it yourself *
-
-## Contributing
-Before contributing, please read the [contribution guidelines](./CONTRIBUTING.MD).
