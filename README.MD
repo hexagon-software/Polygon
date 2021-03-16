@@ -52,3 +52,5 @@ The engine is currently **not** deployed via maven. You can simply
 download the source code and copy it into your project, for easy
 modification. It is however recommended to download a binary (if avaliable) for usage of the engine.
 
+## Contributing
+Before contributing, please read the [contribution guidelines](./CONTRIBUTING.MD).
