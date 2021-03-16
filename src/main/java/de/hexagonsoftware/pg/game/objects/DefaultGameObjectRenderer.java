@@ -20,10 +20,10 @@ import java.awt.*;
 public class DefaultGameObjectRenderer extends GameObjectRenderer {
     public void render(GLGraphics g, int x, int y, int width, int height) {
         g.setColor(new Color(255, 0, 255, 125));
-        g.fillRect(x*Polygon.WorldUnits.ONE_UNIT_PX,
-                y*Polygon.WorldUnits.ONE_UNIT_PX,
-                width*Polygon.WorldUnits.ONE_UNIT_PX,
-                height*Polygon.WorldUnits.ONE_UNIT_PX);
+        g.fillRect(x*Polygon.EngineLevel.ONE_UNIT_PX,
+                y*Polygon.EngineLevel.ONE_UNIT_PX,
+                width*Polygon.EngineLevel.ONE_UNIT_PX,
+                height*Polygon.EngineLevel.ONE_UNIT_PX);
     }
 
     public void render(GLGraphics g) {}

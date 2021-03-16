@@ -6,11 +6,18 @@ import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.graphics.GLGraphics;
 import de.hexagonsoftware.pg.graphics.animation.TextureAnimation;
 import de.hexagonsoftware.pg.resources.ResourceHandler;
+import de.hexagonsoftware.pg.util.debugging.DebugConsole;
 
 public class Game implements IGame {
+	boolean started = false;
 	
 	@Override
 	public void update() {
+		if (started && DebugConsole.testSoundWaiting) {
+			DebugConsole.testSoundWaiting = false;
+			System.out.println("DEBUG>>> Picked up waiting test sound");
+			testSound();
+		}
 	}
 
 	@Override
@@ -38,13 +45,17 @@ public class Game implements IGame {
         		);
         ta.play();
         
-        AudioEngine ae = AudioEngine.getInstance();
+        started = true;
+	}
+	
+	public static void testSound() {
+		AudioEngine ae = AudioEngine.getInstance();
         
         // Create a new listener for the AudioEngine and specify position, orientation and velocity
-        ae.createListener(new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f});
+        if (ae.AE_LISTENER == null) ae.createListener(new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f});
         
         // Create a source for the sound "test" and save the given id for the source
-        int source = ae.createSource("test", new float[] {300f, -10f, 0f}, new float[] {0f, 0f, 0f}, 100.0f, 1.0f);
+        int source = ae.createSource("test", DebugConsole.testSoundPos, new float[] {0f, 0f, 0f}, 1.0f, 1.0f, 0);
 
         //ae.updateListener(); // <-- DEBUG
         ae.playSource(source); // Playback the sound source

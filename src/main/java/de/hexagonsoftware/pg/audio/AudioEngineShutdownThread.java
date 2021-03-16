@@ -10,7 +10,7 @@ public class AudioEngineShutdownThread extends Thread {
 	@Override
 	public void run() {
 		LogManager.getLogger(this).info("Shutting down the AudioEngine...");
-		AudioEngine.getInstance().killALData();
+		AudioEngine.getInstance().shutdown();
 		LogManager.getLogger(this).info("AudioEngine shutdown!");
 	}
 }

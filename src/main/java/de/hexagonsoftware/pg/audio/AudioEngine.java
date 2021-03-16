@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.jogamp.openal.AL;
 import com.jogamp.openal.ALFactory;
 import com.jogamp.openal.util.ALut;
+import com.sun.istack.Nullable;
 
 import de.hexagonsoftware.pg.Polygon;
 
@@ -23,14 +24,21 @@ import de.hexagonsoftware.pg.Polygon;
  * 
  * @author Felix Eckert
  * */
-
-//TODO: Integrate AudioEngine into rest of the engine
-
-public class AudioEngine {
+public class AudioEngine extends Thread {
 	/**
 	 * Instance of the Audio Engine
 	 * */
 	private static AudioEngine AE;
+	
+	/**
+	 * AudioEngine Thread
+	 * */
+	private Thread AE_THREAD;
+	/**
+	 * Controls if the Engine should be running or not.
+	 * */
+	private boolean AE_THREAD_RUNNING;
+	
 	/**
 	 * OpenAL instance
 	 * */
@@ -56,6 +64,7 @@ public class AudioEngine {
 	private Logger AE_LOGGER = LogManager.getLogger("AudioEngine");
 	
 	private AudioEngine() {
+		this.AE_THREAD   = new Thread(this, "AudioEngine");
 		this.AE_AL 		 = ALFactory.getAL();
 		this.AE_SOUNDS   = new HashMap<>();
 		this.AE_SOURCES  = new ArrayList<>();
@@ -72,6 +81,26 @@ public class AudioEngine {
 		if (AE == null) AE = new AudioEngine();
 		
 		return AE;
+	}
+	
+	//////////////////////////////////////////////////
+	
+	public void start() {
+		AE_THREAD.start();
+	}
+	
+	public void run()  {
+		this.AE_LOGGER.info("AudioEngine Thread started!");
+		this.AE_THREAD_RUNNING = true;
+		long lastTime = System.currentTimeMillis();
+		
+		while (AE_THREAD_RUNNING) {
+			if (lastTime - System.currentTimeMillis() > 500) {
+				updateListener();
+			}
+		}
+		
+		this.AE_LOGGER.info("AudioEngine Thread stopped!");
 	}
 	
 	//////////////////////////////////////////////////
@@ -108,7 +137,7 @@ public class AudioEngine {
 	 * @param pitch The Pitch of the source
 	 * @return The ID of the source
 	 * */
-	public int createSource(String sound, float[] pos, float[] vel, float gain, float pitch) {
+	public int createSource(String sound, float[] pos, float[] vel, float gain, float pitch, @Nullable int loop) {
 		// Gen Sources
 		Sound s = AE_SOUNDS.get(sound);
 		Source src = new Source(pos, vel);
@@ -122,12 +151,12 @@ public class AudioEngine {
 		
 		// Set Source Parameters
 		try {
-			AE_AL.alSourcei (src.source[0], AL.AL_BUFFER,   s.buffer[0]    );
-			AE_AL.alSourcef (src.source[0], AL.AL_PITCH,    pitch     	   );
-			AE_AL.alSourcef (src.source[0], AL.AL_GAIN,     gain 		   );
-			AE_AL.alSourcefv(src.source[0], AL.AL_POSITION, src.getPos(), 0);
-			AE_AL.alSourcefv(src.source[0], AL.AL_VELOCITY, src.getVel(), 0);
-			AE_AL.alSourcei (src.source[0], AL.AL_LOOPING,  s.loop[0]      );
+			AE_AL.alSourcei (src.source[0], AL.AL_BUFFER,   s.buffer[0]    			   );
+			AE_AL.alSourcef (src.source[0], AL.AL_PITCH,    pitch     	   			   );
+			AE_AL.alSourcef (src.source[0], AL.AL_GAIN,     gain 		   			   );
+			AE_AL.alSourcefv(src.source[0], AL.AL_POSITION, src.getPos(), 0			   );
+			AE_AL.alSourcefv(src.source[0], AL.AL_VELOCITY, src.getVel(), 0            );
+			AE_AL.alSourcei (src.source[0], AL.AL_LOOPING,  loop < 0 ? s.loop[0] : loop);
 		} catch (NullPointerException e) {
 			AE_LOGGER.error(String.format("An error occured whilst creating sound source: NAME \"%s\" ; "
 					+ "The SoundObject is null, sound not loaded/registered?", sound));
@@ -187,9 +216,17 @@ public class AudioEngine {
 	}
 	
 	/**
+	 * Shutsdown the AudioEngine
+	 * */
+	public void shutdown() {
+		this.AE_THREAD_RUNNING = false;
+		this.killALData();
+	}
+	
+	/**
 	 * Kills all AL data
 	 * */
-	public void killALData() {
+	private void killALData() {
 		AE_LOGGER.info("Killing AL-Data...");
 		AE_SOUNDS.forEach((k, v) -> AE_AL.alDeleteBuffers(AE_SOUNDS.keySet().size(), v.buffer, 0));
 		AE_SOURCES.forEach((v) -> AE_AL.alDeleteSources(AE_SOURCES.size(), v.source, 0));

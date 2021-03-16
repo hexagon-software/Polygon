@@ -9,6 +9,7 @@
 		"f5":"anim/test_an_f5.png"
 	},
 	"sounds": { 
-		"test": "test.wav"
+		"test": "test.wav",
+		"test_mono": "test_mono.wav"
 	}
 }

@@ -6,16 +6,20 @@
 
 package de.hexagonsoftware.pg.util.debugging;
 
-import de.hexagonsoftware.pg.Polygon;
-import de.hexagonsoftware.pg.graphics.GLRenderHandler;
+import java.util.Scanner;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Scanner;
+import de.hexagonsoftware.pg.Polygon;
+import de.hexagonsoftware.pg.graphics.GLRenderHandler;
 
 public class DebugConsole implements Runnable {
     public static GLRenderHandler RENDER_HANDLER = null;
 
+    public static boolean testSoundWaiting = false;
+    public static float[] testSoundPos = null;
+    
     public boolean running = true;
     private Logger LOGGER  = LogManager.getLogger(DebugConsole.class);
 
@@ -31,10 +35,19 @@ public class DebugConsole implements Runnable {
                     s.close();
 		            LOGGER.info("> Exiting...");
                     break;
-                //case "reloadTextures":
-                //     Polygon.reloadTextures();
-                //     System.out.println("> Reloaded Textures");
-                //     continue;
+                    
+                // Quick botch for testing 3D sound, will likely be removed in release
+                case "testSounds":
+                	System.out.print("X: ");
+                	float x = Float.parseFloat(s.nextLine());
+                	System.out.print("Y: ");
+                	float y = Float.parseFloat(s.nextLine());
+                	System.out.print("Z: ");
+                	float z = Float.parseFloat(s.nextLine());
+                	DebugConsole.testSoundWaiting = true;
+                	DebugConsole.testSoundPos = new float[] {x, y, z};
+                	
+                    continue;
             }
         }
 

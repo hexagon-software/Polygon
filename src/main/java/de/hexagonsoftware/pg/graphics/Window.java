@@ -9,6 +9,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import de.hexagonsoftware.pg.Polygon;
+import de.hexagonsoftware.pg.util.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +42,7 @@ public class Window extends JFrame {
 
         // Add Canvas
         getContentPane().add(canvas, BorderLayout.CENTER);
+        setIconImage(ImageLoader.loadImage("/img/HexagonSoftwareDark.png", Polygon.class));
         setVisible(true);
     }
 
@@ -71,13 +73,14 @@ public class Window extends JFrame {
         	setExtendedState(JFrame.MAXIMIZED_BOTH); 
         	setUndecorated(true);
         }
+        setIconImage(ImageLoader.loadImage("/img/HexagonSoftwareDark.png", Polygon.class));
         setVisible(true);
     }
 
     /////////////////////////////////////////////////////////////////////
 
     /**
-     * Convinience method for getting the Windows input-map
+     * Convenience method for getting the Windows input-map
      * @return the input-map
      * */
     public InputMap getInputMap() {
@@ -85,7 +88,7 @@ public class Window extends JFrame {
     }
 
     /**
-     * Convinience method for getting the Windows action-map
+     * Convenience method for getting the Windows action-map
      * @return the action-map
      * */
     public ActionMap getActionMap() {

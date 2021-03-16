@@ -11,7 +11,10 @@ import java.util.Iterator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.World;
 
+import de.hexagonsoftware.pg.audio.AudioEngine;
 import de.hexagonsoftware.pg.game.Camera;
 import de.hexagonsoftware.pg.game.IGame;
 import de.hexagonsoftware.pg.game.IUpdated;
@@ -52,7 +55,7 @@ public class Polygon implements Runnable {
      * Render Targets
      * */
     public static volatile ArrayList<IRenderer> RENDER_TARGETS = new ArrayList<>();
-    /*Other Variables*/
+    /*World/Game Variables*/
     /**
      * Object Handler
      * */
@@ -69,6 +72,11 @@ public class Polygon implements Runnable {
      * IGame instance
      * */
     public static IGame PG_IGAME;
+    /**
+     * JBox2D world for Physics
+     * */
+    public static World PG_WORLD;
+    /*Other Variables*/
     /**
      * Engine Version
      * */
@@ -156,14 +164,18 @@ public class Polygon implements Runnable {
         PG_CAMERA.cameraZ = PG_PROPERTIES.getPropertyAsInt("camera.z");
 
         // Set Scale Factors
-        WorldUnits.SCALE_FACTOR_X = PG_PROPERTIES.getPropertyAsDouble("camera.scaleFactorX");
-        WorldUnits.SCALE_FACTOR_Y = PG_PROPERTIES.getPropertyAsDouble("camera.scaleFactorY");
+        EngineLevel.SCALE_FACTOR_X = PG_PROPERTIES.getPropertyAsDouble("camera.scaleFactorX");
+        EngineLevel.SCALE_FACTOR_Y = PG_PROPERTIES.getPropertyAsDouble("camera.scaleFactorY");
 
         PG_LOGGER.info("Loading done!");
         // Add PG_RENDER_HANDLER as Event Handler
         PG_WINDOW.getCanvas().setContext(PG_WINDOW.getCanvas().getGL().getContext(), false);
         PG_WINDOW.getCanvas().addGLEventListener(PG_RENDER_HANDLER);
 
+        PG_LOGGER.info("Loading world...");
+        EngineLevel.genLevelCreate();
+        PG_UPDATER_LIST.add(EngineLevel.getInstance());
+        
         // Enable debug if activated in config
         if (PG_PROPERTIES.getPropertyAsBool("debug.enable")) {
             PG_LOGGER.info("Debug enabled!");
@@ -177,6 +189,8 @@ public class Polygon implements Runnable {
          }
 
         if (PG_IGAME != null) PG_IGAME.start();
+        
+        AudioEngine.getInstance().start();
         
         while (PG_THREAD_RUNNING) {
             update();
@@ -203,8 +217,14 @@ public class Polygon implements Runnable {
         
         if (PG_IGAME != null) PG_IGAME.update();
     }
-
-    public static class WorldUnits {
+    
+    /**
+     * This essentially contains all informations
+     * about a currently loaded level. Its gen-level-
+     * create function instantiates a basic world
+     * with normal gravity.
+     * */
+    public static class EngineLevel implements IUpdated {
     	// These are reference classes for the size of World Units
     	// on a 1280x720 Window in pixels. These are used for translating
     	// world to screen coordinates.
@@ -213,5 +233,28 @@ public class Polygon implements Runnable {
         public static final double ONE_PX_UNIT = 0.125;
         public static double 	   SCALE_FACTOR_X = 1;
         public static double 	   SCALE_FACTOR_Y = 1;
+        
+        private static EngineLevel INSTANCE = new EngineLevel();
+        
+        /**
+         * pus = Physics-Updates/Second. Default 200ms
+         * */
+        public static final long pus = 200;      
+        private static long lastTime;
+        
+        public static void genLevelCreate() {
+        	Polygon.PG_WORLD = new World(new Vec2(0, 10));
+        	lastTime = System.currentTimeMillis();
+        }
+        
+        public static EngineLevel getInstance() {
+        	return INSTANCE == null ? INSTANCE = new EngineLevel() : INSTANCE;
+        }
+        
+        public void update() {
+        	if (System.currentTimeMillis() - lastTime > 1000) {
+        		Polygon.PG_WORLD.step(0.02f, 10, 20);
+        	}
+        }
     }
 }
