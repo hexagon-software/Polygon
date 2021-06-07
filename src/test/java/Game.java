@@ -1,3 +1,4 @@
+import com.jogamp.openal.AL;
 import com.jogamp.opengl.util.texture.Texture;
 
 import de.hexagonsoftware.pg.Polygon;
@@ -50,14 +51,15 @@ public class Game implements IGame {
 	
 	public static void testSound() {
 		AudioEngine ae = AudioEngine.getInstance();
-        
+		
         // Create a new listener for the AudioEngine and specify position, orientation and velocity
         if (ae.AE_LISTENER == null) ae.createListener(new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f}, new float[] {0f, 0f, 0f});
         
         // Create a source for the sound "test" and save the given id for the source
         int source = ae.createSource("test", DebugConsole.testSoundPos, new float[] {0f, 0f, 0f}, 1.0f, 1.0f, 0);
-
+        
         //ae.updateListener(); // <-- DEBUG
         ae.playSource(source); // Playback the sound source
+        System.out.println("STATE: "+ae.getSourceState(source));
 	}
 }

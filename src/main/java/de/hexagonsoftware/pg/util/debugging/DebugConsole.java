@@ -38,15 +38,22 @@ public class DebugConsole implements Runnable {
                     
                 // Quick botch for testing 3D sound, will likely be removed in release
                 case "testSounds":
-                	System.out.print("X: ");
-                	float x = Float.parseFloat(s.nextLine());
-                	System.out.print("Y: ");
-                	float y = Float.parseFloat(s.nextLine());
-                	System.out.print("Z: ");
-                	float z = Float.parseFloat(s.nextLine());
-                	DebugConsole.testSoundWaiting = true;
-                	DebugConsole.testSoundPos = new float[] {x, y, z};
-                	
+                	while (true) {
+                		try {
+				        	System.out.print("X: ");
+				        	float x = Float.parseFloat(s.nextLine());
+				        	System.out.print("Y: ");
+				        	float y = Float.parseFloat(s.nextLine());
+				        	System.out.print("Z: ");
+				        	float z = Float.parseFloat(s.nextLine());
+				        	DebugConsole.testSoundWaiting = true;
+				        	DebugConsole.testSoundPos = new float[] {x, y, z};
+                		} catch (NumberFormatException e) {
+                			System.out.println("Invalid number!");
+                			continue;
+                		}
+                		break;
+                	}
                     continue;
             }
         }

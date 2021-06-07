@@ -29,6 +29,9 @@ public class Main implements IRenderer {
         g.fillRect(5*8, 0, 10*8, 5*8);
         g.fillRect(10*8, 0, 5*8, 20*8);
 
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 123, 132);
+        
         g.setColor(new Color(0, 255, 255, 100));
         g.fillRect(0, 10*8, 20*8, 5*8);
         g.fillRect(0, 10*8, 5*8, 15*8);

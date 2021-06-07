@@ -1,5 +1,6 @@
 package de.hexagonsoftware.pg.audio;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +35,16 @@ public class AudioEngine extends Thread {
 	 * AudioEngine Thread
 	 * */
 	private Thread AE_THREAD;
+	
 	/**
 	 * Controls if the Engine should be running or not.
 	 * */
 	private boolean AE_THREAD_RUNNING;
+	
+	/**
+	 * AudioEngine initialised
+	 * */
+	private boolean AE_INIT = false;
 	
 	/**
 	 * OpenAL instance
@@ -75,6 +82,7 @@ public class AudioEngine extends Thread {
 		AE_AL.alGetError();
 		
 		AE_LOGGER.info("AudioEngine Initialised!");
+		this.AE_INIT = true;
 	}
 	
 	public static AudioEngine getInstance() {
@@ -187,6 +195,17 @@ public class AudioEngine extends Thread {
 	}
 	
 	/**
+	 * Returns the current state of a source
+	 * @param source The ID of the source, of which the state should be quarried
+	 * @return The state of the source
+	 * */
+	public int getSourceState(int source) {
+		int[] val = new int[1];
+		this.AE_AL.alGetSourcei(source, AL.AL_SOURCE_STATE, val, 0);
+		return val[0];
+	}
+	
+	/**
 	 * Creates a new Listener object for the Engine
 	 * 
 	 * @param pos The Position of the listener
@@ -231,6 +250,13 @@ public class AudioEngine extends Thread {
 		AE_SOUNDS.forEach((k, v) -> AE_AL.alDeleteBuffers(AE_SOUNDS.keySet().size(), v.buffer, 0));
 		AE_SOURCES.forEach((v) -> AE_AL.alDeleteSources(AE_SOURCES.size(), v.source, 0));
 		ALut.alutExit();
+	}
+	
+	/**
+	 * Returns if the Audio Engine is initialised
+	 * */
+	public boolean isInitialised() {
+		return this.AE_INIT;
 	}
 	
 	/**

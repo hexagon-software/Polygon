@@ -42,6 +42,10 @@ public class Polygon implements Runnable {
      * Running Boolean
      * */
     public static boolean PG_THREAD_RUNNING = false;
+    /**
+     * Engine's Delta time
+     * */
+    public static int PG_DELTA_TIME = 0;
     /*Graphics-Related Variables*/
     /**
      * Engine Window
@@ -192,7 +196,11 @@ public class Polygon implements Runnable {
         
         AudioEngine.getInstance().start();
         
+        long last_time = System.nanoTime();
         while (PG_THREAD_RUNNING) {
+        	long time = System.nanoTime();
+            Polygon.PG_DELTA_TIME = (int) ((time - last_time) / 1000000);
+            last_time = time;
             update();
             PG_WINDOW.getCanvas().display();
         }
@@ -239,7 +247,10 @@ public class Polygon implements Runnable {
         /**
          * pus = Physics-Updates/Second. Default 200ms
          * */
-        public static final long pus = 200;      
+        public static long pus = 200;    
+        public static int velocityIterations = 10;       
+        public static int positionIterations = 20;
+        public static float delta = 0.02f;
         private static long lastTime;
         
         public static void genLevelCreate() {
@@ -252,7 +263,7 @@ public class Polygon implements Runnable {
         }
         
         public void update() {
-        	if (System.currentTimeMillis() - lastTime > 1000) {
+        	if (System.currentTimeMillis() - lastTime > pus) {
         		Polygon.PG_WORLD.step(0.02f, 10, 20);
         	}
         }
